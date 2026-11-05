@@ -1,0 +1,6 @@
+{
+  "name": "M07 – MSANIFU ZERO SEVEN Premium Car Hire & Tourism",
+  "description": "Mombasa's premier luxury car hire, VIP airport transfers, coastal city tours, and chauffeur services. Daily car rental from KSh 3,500.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
