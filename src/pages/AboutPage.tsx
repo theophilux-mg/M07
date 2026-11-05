@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import { Shield, Award, Users, Compass, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Shield, Award, Users, Compass, CheckCircle2, ArrowRight, Clock, Phone } from 'lucide-react';
 
 export const AboutPage: React.FC = () => {
   const { navigateTo } = useApp();
@@ -11,107 +12,123 @@ export const AboutPage: React.FC = () => {
       {/* Hero Intro */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-7 space-y-5">
-          <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-semibold">
-            The M07 Heritage
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-white font-display leading-tight">
-            Setting the Benchmark for Luxury Mobility in Mombasa.
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-emerald-500/30 text-xs text-emerald-300 font-semibold uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+            About Msanifu Zero Seven
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+            Your Travel Partner for <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-emerald-400 to-sky-400">
+              Memorable Journeys.
+            </span>
           </h1>
-          <p className="text-sm text-neutral-300 leading-relaxed">
-            Founded with an unwavering dedication to reliability and hospitality, <strong className="text-white">M07 – MSANIFU ZERO SEVEN</strong> bridges the gap between premium executive automotive rentals and personalized coastal tourism in Kenya.
+          <p className="text-base text-amber-300 font-medium">
+            Travel in Comfort and Style · Explore Kenya with Us! · A Phone Call Away
           </p>
-          <p className="text-sm text-neutral-400 leading-relaxed">
-            Headquartered along Links Road in Nyali, we operate 24/7 across Moi International Airport (MBA), the SGR Miritini Terminus, Mombasa Island, Diani Beach, and the North Coast corridor through Kilifi and Malindi.
+          <p className="text-sm text-slate-300 leading-relaxed">
+            Founded with an unwavering dedication to reliability and coastal hospitality, <strong className="text-white">Msanifu Zero Seven Tour and Travel (M07)</strong> provides dependable car hire, executive airport and SGR transfers, and bespoke coastal excursions across Kenya.
+          </p>
+          <p className="text-sm text-slate-400 leading-relaxed">
+            Based in Mombasa, Kenya, we operate across Moi International Airport (MBA), the SGR Miritini Terminus, Mombasa Island, Diani Beach, Kwale Town, and the coastal corridor through Kilifi and Malindi.
           </p>
 
-          <div className="grid grid-cols-3 gap-6 pt-4 border-t border-neutral-800">
+          <div className="grid grid-cols-3 gap-6 pt-4 border-t border-slate-800">
             <div>
-              <span className="text-2xl font-black text-[#D4AF37] font-display">100%</span>
-              <p className="text-xs text-neutral-400 mt-1">Fleet Compliance & NTSA Insured</p>
+              <span className="text-2xl font-black text-amber-300 font-mono">100%</span>
+              <p className="text-xs text-slate-400 mt-1">NTSA Verified & Insured</p>
             </div>
             <div>
-              <span className="text-2xl font-black text-white font-display">30 Min</span>
-              <p className="text-xs text-neutral-400 mt-1">Average Airport Delivery Time</p>
+              <span className="text-2xl font-black text-white font-mono">0 Overlap</span>
+              <p className="text-xs text-slate-400 mt-1">Guaranteed Vehicle Assignment</p>
             </div>
             <div>
-              <span className="text-2xl font-black text-[#D4AF37] font-display">2,500+</span>
-              <p className="text-xs text-neutral-400 mt-1">Successful Trips Executed</p>
+              <span className="text-2xl font-black text-emerald-400 font-mono">0729 255154</span>
+              <p className="text-xs text-slate-400 mt-1">Direct Customer Hotline</p>
             </div>
           </div>
         </div>
 
         <div className="lg:col-span-5 relative">
-          <div className="rounded-2xl overflow-hidden border border-[#D4AF37]/30 shadow-2xl relative">
+          <div className="rounded-2xl overflow-hidden border border-slate-800 shadow-2xl relative">
             <img
-              src="/src/assets/images/prado_tx_luxury_1793873968849.jpg"
-              alt="M07 Prado at Nyali Estate"
+              src="/images/prado_tx_luxury_1793873968849.jpg"
+              alt="Msanifu Zero Seven Fleet in Mombasa"
               className="w-full h-80 object-cover"
-              referrerPolicy="no-referrer"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
             <div className="absolute bottom-4 left-4 right-4 text-xs text-white">
-              <span className="text-[#D4AF37] font-bold uppercase tracking-wider block text-[10px]">Nyali Operations Desk</span>
-              <span>Dedicated fleet maintenance and VIP chauffeur dispatch</span>
+              <span className="text-amber-400 font-bold uppercase tracking-wider block text-[10px]">Mombasa Operations Desk</span>
+              <span>Toyota Coaster 20-pax bus, Noah/Voxy 7-seater, and Executive 4x4s</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Pillars of Excellence */}
+      {/* The 4 Core Pillars from the Flyer */}
       <div className="space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-semibold">Our Standard</span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-display">Why Discerning Clients Choose M07</h2>
+          <span className="text-xs uppercase tracking-widest text-emerald-400 font-semibold">Our Standards</span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white">The Four Core Pillars of M07</h2>
+          <p className="text-xs text-slate-400">Straight from our founding pledge to every traveler in Kenya.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-[#0F141D] border border-neutral-800 p-6 rounded-2xl space-y-3">
-            <Shield className="w-8 h-8 text-[#D4AF37]" />
-            <h3 className="text-base font-bold text-white">Guaranteed Availability</h3>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              We never overbook or make speculative promises. When you reserve a vehicle, our reservation engine locks out conflicting dates, ensuring your exact vehicle is staged and waiting.
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl space-y-3">
+            <Shield className="w-8 h-8 text-emerald-400" />
+            <h3 className="text-base font-bold text-white">Safe & Comfortable Transport</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Meticulously maintained, fully air-conditioned vehicles prepared with safety gear, high-tread tyres, and comfortable upholstery for coastal journeys.
             </p>
           </div>
 
-          <div className="bg-[#0F141D] border border-neutral-800 p-6 rounded-2xl space-y-3">
-            <Award className="w-8 h-8 text-[#D4AF37]" />
-            <h3 className="text-base font-bold text-white">Meticulous Mechanical Maintenance</h3>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              Every vehicle undergoes a multi-point inspection before every dispatch: pristine braking systems, ice-cold air conditioning, high-tread all-terrain tyres, and full valeting.
+          <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl space-y-3">
+            <Award className="w-8 h-8 text-amber-400" />
+            <h3 className="text-base font-bold text-white">Professional Drivers</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Courteous, vetted local chauffeurs with deep route knowledge across Mombasa, Dongo Kundu bypass, Diani Beach, Kwale hills, and SGR connections.
             </p>
           </div>
 
-          <div className="bg-[#0F141D] border border-neutral-800 p-6 rounded-2xl space-y-3">
-            <Users className="w-8 h-8 text-[#D4AF37]" />
-            <h3 className="text-base font-bold text-white">Professional Coastal Chauffeurs</h3>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              Our drivers are certified, vetted, English and Swahili fluent, deeply knowledgeable about coastal shortcuts, ferry dynamics, and high-level hospitality protocols.
+          <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl space-y-3">
+            <Clock className="w-8 h-8 text-sky-400" />
+            <h3 className="text-base font-bold text-white">Reliable & On Time</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              We monitor flight radar at Moi International Airport (MBA) and train schedules at SGR Miritini to ensure on-time pickups without delay.
+            </p>
+          </div>
+
+          <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl space-y-3">
+            <Compass className="w-8 h-8 text-emerald-400" />
+            <h3 className="text-base font-bold text-white">Tours & Travel Packages</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              From family vacations in the Toyota Noah/Voxy to 20-passenger Toyota Coaster group tours, we craft memorable itineraries across coastal Kenya.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Leadership & Contact prompt */}
-      <div className="bg-[#0F141D] border border-neutral-800 rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+      {/* Contact prompt */}
+      <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
         <div className="space-y-2">
-          <h3 className="text-2xl font-bold text-white font-display">Speak With Our Operations Team</h3>
-          <p className="text-xs sm:text-sm text-neutral-400 max-w-xl">
-            Have bespoke route requirements, multi-vehicle motorcades, or VIP security escort needs in Coastal Kenya? Connect with us directly.
+          <h3 className="text-2xl font-bold text-white">Speak With Our Operations Team</h3>
+          <p className="text-xs sm:text-sm text-slate-400 max-w-xl">
+            Have bespoke route requirements, multi-leg group itineraries, or 20-seater Coaster bookings? We are just a phone call away.
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigateTo('contact')}
-            className="px-6 py-3 bg-[#D4AF37] hover:bg-[#AA820A] text-black font-bold text-xs rounded-lg transition-colors cursor-pointer"
+          <Link
+            to="/contact"
+            className="px-6 py-3 bg-gradient-to-r from-amber-300 to-amber-500 text-slate-950 font-bold text-xs rounded-lg transition-all"
           >
-            Contact Nyali Office
-          </button>
-          <button
-            onClick={() => navigateTo('fleet')}
-            className="px-6 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-medium text-xs rounded-lg border border-neutral-700 transition-colors cursor-pointer"
+            Contact Mombasa Desk
+          </Link>
+          <a
+            href="tel:+254729255154"
+            className="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs rounded-lg border border-slate-700 transition-colors flex items-center gap-2"
           >
-            Explore Fleet
-          </button>
+            <Phone className="w-4 h-4 text-emerald-400" />
+            <span>0729 255154</span>
+          </a>
         </div>
       </div>
 

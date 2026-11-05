@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Vehicle, Booking } from '../types';
 import { dataService } from '../services/dataService';
 
@@ -16,6 +17,7 @@ export type PageView =
   | 'faqs'
   | 'booking'
   | 'tracking'
+  | 'quotation'
   | 'privacy'
   | 'terms'
   | 'admin';
@@ -70,6 +72,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentView]);
 
+  const navigate = useNavigate();
+
+  const viewToPathMap: Record<PageView, string> = {
+    home: '/',
+    about: '/about',
+    fleet: '/fleet',
+    'car-hire': '/car-hire',
+    transfers: '/airport-transfers',
+    tours: '/city-tours',
+    chauffeur: '/chauffeur',
+    gallery: '/gallery',
+    corporate: '/corporate',
+    contact: '/contact',
+    faqs: '/faqs',
+    booking: '/booking',
+    tracking: '/tracking',
+    quotation: '/quotation',
+    privacy: '/privacy',
+    terms: '/terms',
+    admin: '/admin'
+  };
+
   const navigateTo = (view: PageView, extra?: { vehicleId?: string; bookingRef?: string }) => {
     if (extra?.vehicleId) {
       setSelectedVehicleId(extra.vehicleId);
@@ -78,6 +102,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setTrackingRef(extra.bookingRef);
     }
     setCurrentView(view);
+    const targetPath = viewToPathMap[view] || '/';
+    navigate(targetPath);
   };
 
   const adminLogin = (email: string, pass: string): boolean => {
@@ -94,6 +120,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsAdmin(false);
     localStorage.removeItem('m07_admin_auth');
     setCurrentView('home');
+    navigate('/');
   };
 
   const openMpesaModal = (bookingRef: string, amount: number, phone: string = '+254729255154') => {

@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Ocean & Sky Gradients -->
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A2540" />
+      <stop offset="60%" stop-color="#0D3B66" />
+      <stop offset="100%" stop-color="#065A82" />
+    </linearGradient>
+
+    <!-- Sun Gradient -->
+    <linearGradient id="sunGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047" />
+      <stop offset="50%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+
+    <!-- Tropical Palm Green Gradient -->
+    <linearGradient id="palmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="50%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <!-- Coastal Road Gradient -->
+    <linearGradient id="roadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="50%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+
+    <!-- Gold Accent Ring -->
+    <linearGradient id="goldRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047" />
+      <stop offset="35%" stop-color="#D4AF37" />
+      <stop offset="70%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#B45309" />
+    </linearGradient>
+
+    <!-- Airplane Metal Gradient -->
+    <linearGradient id="planeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="60%" stop-color="#E2E8F0" />
+      <stop offset="100%" stop-color="#94A3B8" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Emblem Ring -->
+  <circle cx="250" cy="250" r="235" fill="#080B10" stroke="url(#goldRing)" stroke-width="8" />
+  <circle cx="250" cy="250" r="222" fill="url(#skyGrad)" stroke="#10B981" stroke-width="2" stroke-opacity="0.4" />
+
+  <!-- Tropical Sun Setting Over Ocean Horizon -->
+  <circle cx="250" cy="210" r="75" fill="url(#sunGrad)" opacity="0.95" />
+  
+  <!-- Coastal Waves / Sea Horizon -->
+  <path d="M50 250 Q150 240 250 248 T450 248 L450 270 L50 270 Z" fill="#0284C7" opacity="0.4" />
+  <path d="M50 260 Q150 252 250 258 T450 258 L450 280 L50 280 Z" fill="#0369A1" opacity="0.5" />
+
+  <!-- Coastal Winding Road Leading Into Horizon -->
+  <path d="M225 240 L275 240 L380 460 L120 460 Z" fill="url(#roadGrad)" />
+  <!-- Road Yellow Dashed Center Line -->
+  <path d="M250 245 L250 265 M250 280 L250 310 M250 330 L250 375 M250 400 L250 460" 
+        stroke="#F59E0B" stroke-width="6" stroke-linecap="round" stroke-dasharray="14 12" />
+  <!-- Road White Shoulders -->
+  <path d="M225 240 L120 460" stroke="#E2E8F0" stroke-width="3" opacity="0.7" />
+  <path d="M275 240 L380 460" stroke="#E2E8F0" stroke-width="3" opacity="0.7" />
+
+  <!-- Left Tropical Palm Tree -->
+  <!-- Palm Trunk -->
+  <path d="M125 430 Q145 320 160 210 Q164 210 168 212 Q152 320 135 430 Z" fill="#78350F" />
+  <!-- Trunk Ring Details -->
+  <path d="M130 390 Q142 385 146 388 M136 340 Q148 335 152 338 M144 280 Q154 276 158 279" 
+        stroke="#92400E" stroke-width="3" stroke-linecap="round" />
+  <!-- Palm Fronds / Leaves -->
+  <!-- Leaf 1 (Top Left) -->
+  <path d="M162 210 Q100 160 60 190 Q110 195 162 210 Z" fill="url(#palmGrad)" />
+  <path d="M162 210 Q80 170 60 190" stroke="#34D399" stroke-width="2" fill="none" />
+  <!-- Leaf 2 (Arch Left) -->
+  <path d="M162 210 Q90 200 65 245 Q120 230 162 210 Z" fill="url(#palmGrad)" />
+  <!-- Leaf 3 (Top Up) -->
+  <path d="M162 210 Q145 130 175 120 Q170 170 162 210 Z" fill="url(#palmGrad)" />
+  <!-- Leaf 4 (Right Top) -->
+  <path d="M162 210 Q215 150 250 175 Q205 195 162 210 Z" fill="url(#palmGrad)" />
+  <!-- Leaf 5 (Right Droop) -->
+  <path d="M162 210 Q220 210 240 245 Q195 235 162 210 Z" fill="url(#palmGrad)" />
+  <!-- Coconut Cluster -->
+  <circle cx="160" cy="216" r="6" fill="#451A03" />
+  <circle cx="168" cy="218" r="6" fill="#78350F" />
+  <circle cx="163" cy="223" r="5" fill="#451A03" />
+
+  <!-- Soaring Commercial Jet Airplane Across Coastal Sky -->
+  <g transform="translate(320, 140) rotate(-28) scale(0.95)">
+    <!-- Vapor Contrail Trail -->
+    <path d="M-130 0 C-90 2 -40 1 0 0" stroke="rgba(255,255,255,0.7)" stroke-width="4" stroke-linecap="round" />
+    <path d="M-130 3 C-90 6 -40 3 0 0" stroke="rgba(253, 224, 71, 0.5)" stroke-width="2" stroke-linecap="round" />
+    
+    <!-- Fuselage Body -->
+    <path d="M-45 -5 L35 -4 C55 -3 65 0 65 0 C65 0 55 3 35 4 L-45 5 C-52 5 -55 2 -55 0 C-55 -2 -52 -5 -45 -5 Z" 
+          fill="url(#planeGrad)" stroke="#64748B" stroke-width="1.5" />
+    <!-- Cockpit Windows -->
+    <path d="M42 -2 L52 -1 C50 0 45 1 42 1 Z" fill="#0A2540" />
+    <!-- Main Left Wing -->
+    <path d="M5 -3 L-22 -42 C-26 -43 -29 -40 -27 -36 L-6 -3 Z" fill="url(#planeGrad)" stroke="#64748B" stroke-width="1" />
+    <path d="M-12 -22 L-9 -22" stroke="#EF4444" stroke-width="3" stroke-linecap="round" /> <!-- Wingtip red beacon -->
+    <!-- Main Right Wing -->
+    <path d="M12 3 L-12 38 C-15 41 -18 39 -17 35 L0 3 Z" fill="url(#planeGrad)" stroke="#64748B" stroke-width="1" />
+    <!-- Tail Fin (Vertical Stabilizer) -->
+    <path d="M-42 0 L-60 -22 C-63 -24 -65 -22 -63 -19 L-50 0 Z" fill="#D4AF37" stroke="#92400E" stroke-width="1" />
+    <!-- Horizontal Stabilizers -->
+    <path d="M-46 -2 L-58 -14 L-54 -14 L-42 -1 Z" fill="url(#planeGrad)" />
+    <path d="M-46 2 L-58 14 L-54 14 L-42 1 Z" fill="url(#planeGrad)" />
+    <!-- Jet Engines -->
+    <ellipse cx="-2" cy="-14" rx="8" ry="3.5" fill="#475569" />
+    <ellipse cx="2" cy="14" rx="8" ry="3.5" fill="#475569" />
+  </g>
+
+  <!-- Golden Coastal Stars / Tropical Sparkles -->
+  <polygon points="390,95 393,105 403,108 393,111 390,121 387,111 377,108 387,105" fill="#FDE047" />
+  <polygon points="110,120 112,126 118,128 112,130 110,136 108,130 102,128 108,126" fill="#FDE047" opacity="0.8" />
+
+  <!-- Bottom Brand Ribbon Banner -->
+  <path d="M85 410 Q250 395 415 410 L430 465 Q250 450 70 465 Z" fill="#080B10" stroke="url(#goldRing)" stroke-width="3" />
+  <text x="250" y="435" text-anchor="middle" font-family="'Outfit', 'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="28" fill="#FDE047" letter-spacing="4">
+    MSANIFU ZERO SEVEN
+  </text>
+  <text x="250" y="455" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="13" fill="#38BDF8" letter-spacing="3">
+    TOUR &amp; TRAVEL · M07
+  </text>
+</svg>

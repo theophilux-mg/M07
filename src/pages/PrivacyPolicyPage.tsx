@@ -64,9 +64,9 @@ export const PrivacyPolicyPage: React.FC = () => {
           <br />
           Email: <a href="mailto:msanifuzeroseven@gmail.com" className="text-[#D4AF37] hover:underline">msanifuzeroseven@gmail.com</a>
           <br />
-          Phone: +254 729 255 154
+          Phone: 0729 255154 / +254 729 255 154
           <br />
-          Location: Links Road, Nyali, Mombasa, Kenya
+          Location: Mombasa, Kenya
         </p>
       </section>
 

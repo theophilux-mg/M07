@@ -9,7 +9,9 @@ import {
   CustomerEnquiry, 
   CustomerReview, 
   GalleryItem,
-  VehicleCategory 
+  VehicleCategory,
+  GroupQuotation,
+  RouteTariff 
 } from '../types';
 import { 
   ShieldCheck, 
@@ -53,15 +55,22 @@ export const AdminDashboard: React.FC = () => {
 
   // Dashboard Active Tab
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'bookings' | 'fleet' | 'pricing' | 'enquiries' | 'reviews' | 'payments' | 'database'
+    'overview' | 'bookings' | 'quotations' | 'fleet' | 'pricing' | 'enquiries' | 'reviews' | 'payments' | 'database' | 'golive'
   >('overview');
 
   // Reactive Data
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [quotations, setQuotations] = useState<GroupQuotation[]>([]);
+  const [routeTariffs, setRouteTariffs] = useState<RouteTariff[]>([]);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [enquiries, setEnquiries] = useState<CustomerEnquiry[]>([]);
   const [reviews, setReviews] = useState<CustomerReview[]>([]);
   const [mpesaLogs, setMpesaLogs] = useState<any[]>([]);
+
+  // Route Tariff Inline Editing State
+  const [editingTariffId, setEditingTariffId] = useState<string | null>(null);
+  const [tariffPriceInput, setTariffPriceInput] = useState<number>(0);
+  const [tariffNotesInput, setTariffNotesInput] = useState<string>('');
 
   // Filters
   const [bookingSearch, setBookingSearch] = useState('');
@@ -92,6 +101,8 @@ export const AdminDashboard: React.FC = () => {
 
   const refreshData = () => {
     setBookings(dataService.getBookings());
+    setQuotations(dataService.getGroupQuotations());
+    setRouteTariffs(dataService.getRouteTariffs());
     setVehicles(dataService.getVehicles());
     setEnquiries(dataService.getEnquiries());
     setReviews(dataService.getReviews());
@@ -232,7 +243,7 @@ export const AdminDashboard: React.FC = () => {
       pricePerDay: 3500,
       pricePerDayWeekly: 3200,
       chauffeurDailyRate: 2000,
-      image: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=1200&q=80',
+      image: '/images/hero_m07_fleet_1793873968288.jpg',
       description: 'Fleet unit in excellent mechanical condition, serviced for coastal tours.',
       featuresText: 'Air Conditioning, Bluetooth Audio, Push Start',
       isAvailable: true,
@@ -372,12 +383,14 @@ export const AdminDashboard: React.FC = () => {
         {[
           { id: 'overview', label: 'Overview & KPIs', icon: Calendar },
           { id: 'bookings', label: `Reservations (${bookings.length})`, icon: Calendar },
+          { id: 'quotations', label: `Group Quotes (${quotations.length}) & Tariffs`, icon: Users },
           { id: 'fleet', label: `Fleet Inventory (${vehicles.length})`, icon: Car },
           { id: 'pricing', label: 'Tariff Management', icon: DollarSign },
           { id: 'enquiries', label: `Inquiries (${enquiries.length})`, icon: MessageSquare },
           { id: 'reviews', label: `Reviews (${reviews.length})`, icon: CheckCircle },
           { id: 'payments', label: `M-Pesa Logs (${mpesaLogs.length})`, icon: CreditCard },
           { id: 'database', label: 'Supabase PostgreSQL DDL', icon: Database },
+          { id: 'golive', label: 'Go-Live Guide (Real Money & .com)', icon: ShieldCheck },
         ].map(tab => {
           const Icon = tab.icon;
           const active = activeTab === tab.id;
@@ -665,7 +678,207 @@ export const AdminDashboard: React.FC = () => {
               </div>
             )}
           </div>
+        </div>
+      )}
 
+      {/* --- TAB: GROUP QUOTATIONS & ROUTE TARIFFS --- */}
+      {activeTab === 'quotations' && (
+        <div className="space-y-8">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-neutral-800">
+            <div>
+              <h3 className="text-lg font-bold text-white font-display">Group Quotations & Baseline Tariffs</h3>
+              <p className="text-xs text-neutral-400">Review multi-leg group requests, per-person rates, and manage route pricing tariffs.</p>
+            </div>
+            <span className="text-xs text-amber-400 font-medium">Estimates subject to confirmation by M07</span>
+          </div>
+
+          {/* Submitted Quotations Section */}
+          <div className="bg-[#0F141D] border border-neutral-800 rounded-2xl p-6 space-y-4">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <Users className="w-4 h-4 text-emerald-400" />
+              Customer Group Quotation Requests ({quotations.length})
+            </h4>
+
+            {quotations.length === 0 ? (
+              <div className="p-8 text-center text-neutral-400 text-xs">
+                No group quotations submitted yet. When customers submit requests on the /quotation page, they appear here.
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {quotations.map(q => (
+                  <div key={q.id} className="bg-neutral-950 border border-neutral-800 rounded-xl p-4 space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-neutral-850">
+                      <div>
+                        <span className="font-mono text-xs font-bold text-emerald-400 mr-2">{q.reference}</span>
+                        <span className="text-white font-bold text-sm">{q.clientName}</span>
+                        {q.organization && <span className="text-neutral-400 text-xs ml-1">({q.organization})</span>}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          q.status === 'Confirmed' ? 'bg-emerald-950 text-emerald-400' :
+                          q.status === 'Reviewed' ? 'bg-sky-950 text-sky-400' : 'bg-amber-950 text-amber-400'
+                        }`}>
+                          {q.status}
+                        </span>
+                        <select
+                          value={q.status}
+                          onChange={(e) => {
+                            dataService.updateGroupQuotationStatus(q.id, e.target.value as any);
+                            refreshData();
+                          }}
+                          className="bg-neutral-900 border border-neutral-700 text-neutral-300 text-[11px] rounded px-2 py-1"
+                        >
+                          <option value="Submitted">Submitted</option>
+                          <option value="Reviewed">Reviewed</option>
+                          <option value="Confirmed">Confirmed</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                      <div>
+                        <span className="text-neutral-500 block">Phone:</span>
+                        <a href={`tel:${q.phone}`} className="text-neutral-200 hover:text-white font-medium">{q.phone}</a>
+                      </div>
+                      <div>
+                        <span className="text-neutral-500 block">Passengers:</span>
+                        <span className="text-white font-bold">{q.passengers} Pax</span>
+                      </div>
+                      <div>
+                        <span className="text-neutral-500 block">Total Estimate:</span>
+                        <span className="text-amber-400 font-bold font-mono">KSh {q.totalEstimateKsh.toLocaleString()}</span>
+                      </div>
+                      <div>
+                        <span className="text-neutral-500 block">Per Person:</span>
+                        <span className="text-emerald-400 font-bold font-mono">KSh {q.perPersonKsh.toLocaleString()}</span>
+                      </div>
+                    </div>
+
+                    {/* Legs list */}
+                    <div className="pt-2 border-t border-neutral-850/60 text-xs space-y-1">
+                      <span className="text-[10px] uppercase font-bold text-neutral-400 block">Itinerary Legs ({q.legs.length}):</span>
+                      {q.legs.map((leg, idx) => (
+                        <div key={leg.id} className="flex justify-between items-center text-neutral-300 bg-neutral-900/60 p-2 rounded">
+                          <span>
+                            {idx + 1}. <strong>{leg.pickup}</strong> ➔ <strong>{leg.destination}</strong> ({leg.date}, {leg.serviceType})
+                          </span>
+                          <span className="font-mono text-amber-300 font-bold">KSh {Number(leg.estimatedPriceKsh).toLocaleString()}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {q.specialRequests && (
+                      <p className="text-xs text-neutral-400 italic bg-neutral-900/40 p-2 rounded">
+                        Notes: {q.specialRequests}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Admin-Editable Route Tariffs Table */}
+          <div className="bg-[#0F141D] border border-neutral-800 rounded-2xl p-6 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-neutral-800">
+              <div>
+                <h4 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                  <DollarSign className="w-4 h-4 text-amber-400" />
+                  Admin-Editable Route Tariffs ({routeTariffs.length})
+                </h4>
+                <p className="text-xs text-neutral-400 mt-0.5">
+                  These baseline tariffs populate auto-estimates on the public Group Quotation builder.
+                </p>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs text-left">
+                <thead>
+                  <tr className="text-neutral-400 bg-neutral-950 border-b border-neutral-800">
+                    <th className="p-3 font-semibold">Origin</th>
+                    <th className="p-3 font-semibold">Destination</th>
+                    <th className="p-3 font-semibold">Service Type</th>
+                    <th className="p-3 font-semibold">Vehicle</th>
+                    <th className="p-3 font-semibold">Tariff (KSh)</th>
+                    <th className="p-3 font-semibold">Notes</th>
+                    <th className="p-3 font-semibold">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-850">
+                  {routeTariffs.map(t => {
+                    const isEditing = editingTariffId === t.id;
+                    return (
+                      <tr key={t.id} className="hover:bg-neutral-900/40">
+                        <td className="p-3 font-medium text-white">{t.from}</td>
+                        <td className="p-3 font-medium text-white">{t.to}</td>
+                        <td className="p-3 text-sky-400">{t.serviceType}</td>
+                        <td className="p-3 text-neutral-300">{t.vehicleType}</td>
+                        <td className="p-3 font-mono font-bold text-amber-400">
+                          {isEditing ? (
+                            <input
+                              type="number"
+                              value={tariffPriceInput}
+                              onChange={(e) => setTariffPriceInput(parseInt(e.target.value) || 0)}
+                              className="w-24 bg-neutral-900 border border-neutral-700 px-2 py-1 rounded text-amber-400"
+                            />
+                          ) : (
+                            `KSh ${t.priceKsh.toLocaleString()}`
+                          )}
+                        </td>
+                        <td className="p-3 text-neutral-400 max-w-xs truncate">
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              value={tariffNotesInput}
+                              onChange={(e) => setTariffNotesInput(e.target.value)}
+                              className="w-full bg-neutral-900 border border-neutral-700 px-2 py-1 rounded text-neutral-200"
+                            />
+                          ) : (
+                            t.notes || '—'
+                          )}
+                        </td>
+                        <td className="p-3">
+                          {isEditing ? (
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => {
+                                  dataService.updateRouteTariff(t.id, tariffPriceInput, tariffNotesInput);
+                                  setEditingTariffId(null);
+                                  refreshData();
+                                }}
+                                className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-[11px] font-bold"
+                              >
+                                Save
+                              </button>
+                              <button
+                                onClick={() => setEditingTariffId(null)}
+                                className="px-2 py-1 text-neutral-400 hover:text-white text-[11px]"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setEditingTariffId(t.id);
+                                setTariffPriceInput(t.priceKsh);
+                                setTariffNotesInput(t.notes || '');
+                              }}
+                              className="px-2.5 py-1 bg-neutral-800 hover:bg-[#D4AF37] hover:text-black rounded text-[11px] font-semibold text-neutral-200 transition-colors"
+                            >
+                              Edit Price
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       )}
 
@@ -1016,6 +1229,138 @@ export const AdminDashboard: React.FC = () => {
         </div>
       )}
 
+      {/* --- TAB 9: GO-LIVE & PRODUCTION GUIDE (REAL MONEY & .COM DOMAIN) --- */}
+      {activeTab === 'golive' && (
+        <div className="space-y-8 text-xs text-neutral-300">
+          <div className="pb-3 border-b border-neutral-800">
+            <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-semibold">
+              Production Deployment Blueprint
+            </span>
+            <h3 className="text-2xl font-bold text-white font-display mt-1">
+              How to Connect Real Money, Real Bookings & Your .com Domain
+            </h3>
+            <p className="text-xs text-neutral-400 mt-1">
+              The straightforward, legal roadmap to make M07 an active commercial enterprise in Kenya.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* Step 1: Real Money */}
+            <div className="bg-[#0F141D] border border-[#D4AF37]/30 rounded-2xl p-6 space-y-4 shadow-xl">
+              <div className="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-base">
+                1
+              </div>
+              <h4 className="text-base font-bold text-white">Real Money (Safaricom STK Push)</h4>
+              <p className="text-neutral-400 leading-relaxed text-[11px]">
+                To have customers receive the real prompt on their phone handset and deduct real Kenya Shillings into your bank/till:
+              </p>
+              
+              <ol className="list-decimal pl-4 space-y-2 text-[11px] text-neutral-300">
+                <li>
+                  <strong>Get a Lipa Na M-Pesa Till or Paybill:</strong> Apply through Safaricom Business portal or your local Safaricom Shop (Nyali/Mombasa CBD) using your National ID and Business Certificate.
+                </li>
+                <li>
+                  <strong>Create a Safaricom Daraja Developer Account:</strong> Visit <a href="https://developer.safaricom.co.ke" target="_blank" rel="noreferrer" className="text-[#D4AF37] underline">developer.safaricom.co.ke</a> and click <em>Create an App</em>.
+                </li>
+                <li>
+                  <strong>Copy 4 Keys:</strong> Consumer Key, Consumer Secret, Passkey, and Shortcode (Till/Paybill).
+                </li>
+                <li>
+                  <strong>Paste into Vercel Settings:</strong> In your Vercel Dashboard, go to <em>Settings &gt; Environment Variables</em> and add:
+                  <div className="bg-neutral-950 p-2 rounded border border-neutral-800 font-mono text-[10px] text-emerald-400 mt-1 space-y-0.5">
+                    <p>MPESA_ENVIRONMENT = production</p>
+                    <p>MPESA_CONSUMER_KEY = your_key</p>
+                    <p>MPESA_CONSUMER_SECRET = your_secret</p>
+                    <p>MPESA_PASSKEY = your_passkey</p>
+                    <p>MPESA_SHORTCODE = 807007</p>
+                  </div>
+                </li>
+                <li>
+                  <strong>Already Integrated:</strong> The file <code className="text-white">/api/mpesa/stkpush.ts</code> in this project is already written to immediately invoke Safaricom's real API the moment those keys exist!
+                </li>
+              </ol>
+            </div>
+
+            {/* Step 2: Real Cloud Database */}
+            <div className="bg-[#0F141D] border border-neutral-800 rounded-2xl p-6 space-y-4 shadow-xl">
+              <div className="w-10 h-10 rounded-xl bg-blue-950 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold text-base">
+                2
+              </div>
+              <h4 className="text-base font-bold text-white">Real Cloud Database (Supabase)</h4>
+              <p className="text-neutral-400 leading-relaxed text-[11px]">
+                To ensure bookings are saved permanently in a secure cloud database rather than local browser storage:
+              </p>
+
+              <ol className="list-decimal pl-4 space-y-2 text-[11px] text-neutral-300">
+                <li>
+                  <strong>Create Free Project:</strong> Go to <a href="https://supabase.com" target="_blank" rel="noreferrer" className="text-[#D4AF37] underline">supabase.com</a> and create a new project in region <em>South Africa (Johannesburg)</em> or <em>Europe (Frankfurt)</em> for fastest Kenya latency.
+                </li>
+                <li>
+                  <strong>Run the Schema SQL:</strong> Go to the <em>Supabase PostgreSQL DDL</em> tab in this dashboard, click <strong>Copy SQL Schema</strong>, paste it into the Supabase <em>SQL Editor</em> and click <strong>Run</strong>. All tables and RLS security policies are created in 3 seconds.
+                </li>
+                <li>
+                  <strong>Add Supabase Keys in Vercel:</strong>
+                  <div className="bg-neutral-950 p-2 rounded border border-neutral-800 font-mono text-[10px] text-blue-400 mt-1 space-y-0.5">
+                    <p>VITE_SUPABASE_URL = https://xyz.supabase.co</p>
+                    <p>VITE_SUPABASE_ANON_KEY = eyJhbG...</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+
+            {/* Step 3: .com Domain */}
+            <div className="bg-[#0F141D] border border-neutral-800 rounded-2xl p-6 space-y-4 shadow-xl">
+              <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37] font-bold text-base">
+                3
+              </div>
+              <h4 className="text-base font-bold text-white">Your .com Domain</h4>
+              <p className="text-neutral-400 leading-relaxed text-[11px]">
+                To replace the vercel.app link with your official custom brand name (e.g. <strong>m07carhire.com</strong> or <strong>msanifuzeroseven.com</strong>):
+              </p>
+
+              <ol className="list-decimal pl-4 space-y-2 text-[11px] text-neutral-300">
+                <li>
+                  <strong>Buy Domain (~$10/year):</strong> On Namecheap, GoDaddy, HostPinnacle, or Truehost Kenya, search for <code className="text-white">m07carhire.com</code> or <code className="text-white">msanifuzeroseven.com</code>.
+                </li>
+                <li>
+                  <strong>Add to Vercel:</strong> In your Vercel project, go to <em>Settings &gt; Domains</em>, type your domain (e.g. <code className="text-white">m07carhire.com</code>) and click <strong>Add</strong>.
+                </li>
+                <li>
+                  <strong>Point DNS Records:</strong> In your domain registrar DNS manager, add these 2 records:
+                  <div className="bg-neutral-950 p-2.5 rounded border border-neutral-800 font-mono text-[10px] text-amber-300 mt-1 space-y-1">
+                    <p>Type: <strong>A</strong> | Host: <strong>@</strong> | Value: <strong>76.76.21.21</strong></p>
+                    <p>Type: <strong>CNAME</strong> | Host: <strong>www</strong> | Value: <strong>cname.vercel-dns.com</strong></p>
+                  </div>
+                </li>
+                <li>
+                  <strong>Automatic SSL:</strong> Vercel automatically activates free HTTPS encryption within 5–10 minutes!
+                </li>
+              </ol>
+            </div>
+
+          </div>
+
+          {/* Instant Dispatch Alerting Banner */}
+          <div className="bg-neutral-950 border border-neutral-800 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="space-y-1 text-center md:text-left">
+              <h4 className="text-sm font-bold text-white">Direct WhatsApp Dispatch Notification</h4>
+              <p className="text-[11px] text-neutral-400">
+                Whenever a client completes a reservation, clicking the <em>WhatsApp Dispatch</em> button sends the customer's full voucher directly to <strong>+254 729 255 154</strong>.
+              </p>
+            </div>
+            <a
+              href="https://wa.me/254729255154"
+              target="_blank"
+              rel="noreferrer"
+              className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold whitespace-nowrap shadow"
+            >
+              Test WhatsApp Hotline (+254 729 255 154)
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* --- VEHICLE ADD / EDIT MODAL --- */}
       {vehicleModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
@@ -1155,7 +1500,7 @@ export const AdminDashboard: React.FC = () => {
                   required
                   value={vehFormData.image}
                   onChange={(e) => setVehFormData({ ...vehFormData, image: e.target.value })}
-                  placeholder="/src/assets/images/... or https://..."
+                  placeholder="/images/... or https://..."
                   className="w-full p-2 bg-neutral-950 border border-neutral-700 rounded text-white"
                 />
               </div>

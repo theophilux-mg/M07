@@ -65,7 +65,7 @@ export const FaqPage: React.FC = () => {
       <div className="bg-[#05070A] border border-neutral-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="space-y-1 text-center sm:text-left">
           <h4 className="text-sm font-bold text-white">Have a specific question not listed here?</h4>
-          <p className="text-xs text-neutral-400">Our Nyali dispatch team is always ready to answer any questions.</p>
+          <p className="text-xs text-neutral-400">Our Mombasa dispatch team is always ready to answer any questions.</p>
         </div>
         <div className="flex items-center gap-3">
           <a
@@ -73,7 +73,7 @@ export const FaqPage: React.FC = () => {
             className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors"
           >
             <Phone className="w-3.5 h-3.5 text-[#D4AF37]" />
-            <span>Call +254 729 255 154</span>
+            <span>0729 255154</span>
           </a>
           <button
             onClick={() => navigateTo('booking')}

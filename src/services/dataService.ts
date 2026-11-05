@@ -6,12 +6,15 @@ import {
   GalleryItem, 
   BookingStatus, 
   PaymentStatus,
-  MpesaTransaction 
+  MpesaTransaction,
+  GroupQuotation,
+  RouteTariff
 } from '../types';
 import { 
   INITIAL_VEHICLES, 
   INITIAL_REVIEWS, 
-  INITIAL_GALLERY 
+  INITIAL_GALLERY,
+  INITIAL_ROUTE_TARIFFS 
 } from '../data/fleetData';
 
 const VEHICLES_STORAGE_KEY = 'm07_fleet_vehicles_v1';
@@ -20,100 +23,12 @@ const ENQUIRIES_STORAGE_KEY = 'm07_fleet_enquiries_v1';
 const REVIEWS_STORAGE_KEY = 'm07_fleet_reviews_v1';
 const GALLERY_STORAGE_KEY = 'm07_fleet_gallery_v1';
 const MPESA_STORAGE_KEY = 'm07_fleet_mpesa_v1';
+const GROUP_QUOTATIONS_STORAGE_KEY = 'm07_fleet_quotations_v1';
+const TARIFFS_STORAGE_KEY = 'm07_fleet_tariffs_v1';
 
-// Seed sample initial bookings
-const INITIAL_BOOKINGS: Booking[] = [
-  {
-    id: 'book-001',
-    reference: 'M07-2026-7842',
-    customerName: 'Hassan Mohamed',
-    customerPhone: '+254712345678',
-    customerEmail: 'hassan.m@gmail.com',
-    pickupLocation: 'Moi International Airport Mombasa (MBA)',
-    destination: 'Nyali (Links Road / Beach Hotels)',
-    pickupDate: '2026-03-01',
-    pickupTime: '10:30',
-    returnDate: '2026-03-05',
-    vehicleId: 'veh-prado-tx-09',
-    vehicleName: 'Toyota Land Cruiser Prado TX/TZ Luxury 7-Seater',
-    vehicleCategory: 'Prado',
-    vehicleImage: '/src/assets/images/prado_tx_luxury_1793873968849.jpg',
-    serviceType: 'Chauffeur Driven',
-    passengers: 4,
-    chauffeurIncluded: true,
-    specialInstructions: 'Flight KQ 604 from Nairobi. Chauffeur to wait at arrival with name board.',
-    status: 'Confirmed',
-    paymentStatus: 'Paid - M-Pesa',
-    paymentReference: 'SHB49XJ18A',
-    rentalDays: 4,
-    dailyRate: 15000,
-    subtotalKsh: 60000,
-    chauffeurCostKsh: 12000,
-    totalCostKsh: 72000,
-    createdAt: '2026-02-28T09:15:00Z',
-    updatedAt: '2026-02-28T09:20:00Z',
-    adminNotes: 'Assigned Driver: Alex Mangi (Staff ID: M07-DRV-04).'
-  },
-  {
-    id: 'book-002',
-    reference: 'M07-2026-8911',
-    customerName: 'Sarah Jenkins',
-    customerPhone: '+254799887766',
-    customerEmail: 'sarah.j@travelsafaris.co.uk',
-    pickupLocation: 'SGR Miritini Terminus (Mombasa Station)',
-    destination: 'Diani Beach (South Coast via Dongo Kundu / Likoni)',
-    pickupDate: '2026-03-03',
-    pickupTime: '14:00',
-    returnDate: '2026-03-07',
-    vehicleId: 'veh-toyota-noah-03',
-    vehicleName: 'Toyota Noah Si Elegance',
-    vehicleCategory: 'Noah/Voxy/Serena',
-    vehicleImage: 'https://images.unsplash.com/photo-1559297434-fae8a1916a79?auto=format&fit=crop&w=1200&q=80',
-    serviceType: 'Airport Transfer',
-    passengers: 6,
-    chauffeurIncluded: true,
-    specialInstructions: 'Family holiday with 2 kids and surf gear. Need child booster seat if available.',
-    status: 'Confirmed',
-    paymentStatus: 'Paid - Card',
-    paymentReference: 'AUTH-CC-9941',
-    rentalDays: 4,
-    dailyRate: 7000,
-    subtotalKsh: 28000,
-    chauffeurCostKsh: 10000,
-    totalCostKsh: 38000,
-    createdAt: '2026-03-01T11:40:00Z',
-    updatedAt: '2026-03-01T14:10:00Z'
-  },
-  {
-    id: 'book-003',
-    reference: 'M07-2026-9204',
-    customerName: 'Eng. Kennedy Mutua',
-    customerPhone: '+254722114455',
-    customerEmail: 'kmutua@coastalenergy.co.ke',
-    pickupLocation: 'Nyali (Links Road / Beach Hotels)',
-    destination: 'Kilifi Town & Bofa Beach',
-    pickupDate: '2026-03-10',
-    pickupTime: '08:00',
-    returnDate: '2026-03-12',
-    vehicleId: 'veh-hilux-06',
-    vehicleName: 'Toyota Hilux Revo Double Cab 4x4',
-    vehicleCategory: 'Double cabins',
-    vehicleImage: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80',
-    serviceType: 'Self-drive',
-    passengers: 3,
-    chauffeurIncluded: false,
-    specialInstructions: 'Site inspection at Kilifi plantation. Self drive with valid Kenyan DL.',
-    status: 'Pending',
-    paymentStatus: 'Unpaid',
-    rentalDays: 2,
-    dailyRate: 9000,
-    subtotalKsh: 18000,
-    chauffeurCostKsh: 0,
-    totalCostKsh: 18000,
-    createdAt: '2026-03-02T16:22:00Z',
-    updatedAt: '2026-03-02T16:22:00Z'
-  }
-];
+// Honest initial bookings state (no invented booking records)
+const INITIAL_BOOKINGS: Booking[] = [];
+
 
 class DataService {
   // --- VEHICLES ---
@@ -460,37 +375,51 @@ class DataService {
     localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(items));
   }
 
-  // --- M-PESA DARAJA STK SIMULATOR ---
-  simulateMpesaPayment(bookingRef: string, phone: string, amount: number): Promise<{ success: boolean; receipt?: string; message: string }> {
+  // --- M-PESA DARAJA STK INTEGRATION (REAL / SIMULATED) ---
+  async simulateMpesaPayment(bookingRef: string, phone: string, amount: number): Promise<{ success: boolean; receipt?: string; message: string; isLive?: boolean }> {
+    try {
+      // 1. Try real server-side Daraja STK Push endpoint
+      const response = await fetch('/api/mpesa/stkpush', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          phone,
+          amount,
+          bookingRef
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.isLive) {
+          return {
+            success: true,
+            isLive: true,
+            message: `Real STK Push sent to ${phone}. Please enter your M-Pesa PIN on your phone handset.`
+          };
+        } else if (data.receipt) {
+          // Fallback simulation mode
+          const randomReceipt = data.receipt;
+          this.recordMpesaSuccess(bookingRef, phone, amount, randomReceipt);
+          return {
+            success: true,
+            receipt: randomReceipt,
+            message: data.message || `Lipa Na M-Pesa payment received for ${bookingRef}. Receipt: ${randomReceipt}.`
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('Backend /api/mpesa/stkpush unreachable or in client-only mode. Executing simulated client resolution.');
+    }
+
+    // 2. Client-side simulation fallback
     return new Promise((resolve) => {
-      // Formats random M-Pesa receipt e.g. RDX982K19A
       const randomReceipt = 'S' + Math.random().toString(36).substring(2, 10).toUpperCase();
 
       setTimeout(() => {
-        // Record in M-Pesa transactions storage
-        try {
-          const raw = localStorage.getItem(MPESA_STORAGE_KEY) || '[]';
-          const list: MpesaTransaction[] = JSON.parse(raw);
-          list.unshift({
-            id: `mpesa-${Date.now()}`,
-            bookingReference: bookingRef,
-            phoneNumber: phone,
-            amount,
-            status: 'Success',
-            receiptNumber: randomReceipt,
-            timestamp: new Date().toISOString()
-          });
-          localStorage.setItem(MPESA_STORAGE_KEY, JSON.stringify(list));
-        } catch {
-          // ignore
-        }
-
-        // Update booking directly
-        const booking = this.getBookingByReference(bookingRef);
-        if (booking) {
-          this.updatePaymentStatus(booking.id, 'Paid - M-Pesa', randomReceipt);
-        }
-
+        this.recordMpesaSuccess(bookingRef, phone, amount, randomReceipt);
         resolve({
           success: true,
           receipt: randomReceipt,
@@ -500,6 +429,30 @@ class DataService {
     });
   }
 
+  private recordMpesaSuccess(bookingRef: string, phone: string, amount: number, receipt: string) {
+    try {
+      const raw = localStorage.getItem(MPESA_STORAGE_KEY) || '[]';
+      const list: MpesaTransaction[] = JSON.parse(raw);
+      list.unshift({
+        id: `mpesa-${Date.now()}`,
+        bookingReference: bookingRef,
+        phoneNumber: phone,
+        amount,
+        status: 'Success',
+        receiptNumber: receipt,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem(MPESA_STORAGE_KEY, JSON.stringify(list));
+    } catch {
+      // ignore
+    }
+
+    const booking = this.getBookingByReference(bookingRef);
+    if (booking) {
+      this.updatePaymentStatus(booking.id, 'Paid - M-Pesa', receipt);
+    }
+  }
+
   getMpesaTransactions(): MpesaTransaction[] {
     try {
       const raw = localStorage.getItem(MPESA_STORAGE_KEY);
@@ -507,6 +460,131 @@ class DataService {
     } catch {
       return [];
     }
+  }
+
+  // --- ROUTE TARIFFS (Admin-editable baseline leg tariffs) ---
+  getRouteTariffs(): RouteTariff[] {
+    try {
+      const data = localStorage.getItem(TARIFFS_STORAGE_KEY);
+      if (!data) {
+        localStorage.setItem(TARIFFS_STORAGE_KEY, JSON.stringify(INITIAL_ROUTE_TARIFFS));
+        return INITIAL_ROUTE_TARIFFS;
+      }
+      return JSON.parse(data);
+    } catch {
+      return INITIAL_ROUTE_TARIFFS;
+    }
+  }
+
+  saveRouteTariffs(tariffs: RouteTariff[]): void {
+    localStorage.setItem(TARIFFS_STORAGE_KEY, JSON.stringify(tariffs));
+  }
+
+  updateRouteTariff(id: string, priceKsh: number, notes?: string): RouteTariff | null {
+    const tariffs = this.getRouteTariffs();
+    const index = tariffs.findIndex(t => t.id === id);
+    if (index === -1) return null;
+    tariffs[index].priceKsh = priceKsh;
+    if (notes !== undefined) {
+      tariffs[index].notes = notes;
+    }
+    this.saveRouteTariffs(tariffs);
+    return tariffs[index];
+  }
+
+  addRouteTariff(tariff: Omit<RouteTariff, 'id'>): RouteTariff {
+    const tariffs = this.getRouteTariffs();
+    const newTariff: RouteTariff = {
+      ...tariff,
+      id: `tariff-${Date.now()}`
+    };
+    tariffs.push(newTariff);
+    this.saveRouteTariffs(tariffs);
+    return newTariff;
+  }
+
+  deleteRouteTariff(id: string): boolean {
+    const tariffs = this.getRouteTariffs();
+    const filtered = tariffs.filter(t => t.id !== id);
+    if (filtered.length === tariffs.length) return false;
+    this.saveRouteTariffs(filtered);
+    return true;
+  }
+
+  estimateLegPrice(from: string, to: string, serviceType: string): number {
+    const tariffs = this.getRouteTariffs();
+    const norm = (s: string) => s.toLowerCase().trim();
+    const fNorm = norm(from);
+    const tNorm = norm(to);
+    const sNorm = norm(serviceType);
+
+    // Look for exact or fuzzy match
+    const match = tariffs.find(t => {
+      const tFrom = norm(t.from);
+      const tTo = norm(t.to);
+      const fromMatch = tFrom.includes(fNorm) || fNorm.includes(tFrom);
+      const toMatch = tTo.includes(tNorm) || tNorm.includes(tTo);
+      return fromMatch && toMatch;
+    });
+
+    if (match) return match.priceKsh;
+
+    // Sensible defaults based on serviceType
+    if (sNorm.includes('full-day') || sNorm.includes('day')) {
+      return 32000;
+    }
+    if (sNorm.includes('safari')) {
+      return 38000;
+    }
+    // Default transfer rate for group/coaster
+    return 22000;
+  }
+
+  // --- GROUP QUOTATIONS ---
+  getGroupQuotations(): GroupQuotation[] {
+    try {
+      const data = localStorage.getItem(GROUP_QUOTATIONS_STORAGE_KEY);
+      if (!data) return [];
+      return JSON.parse(data);
+    } catch {
+      return [];
+    }
+  }
+
+  saveGroupQuotations(quotations: GroupQuotation[]): void {
+    localStorage.setItem(GROUP_QUOTATIONS_STORAGE_KEY, JSON.stringify(quotations));
+  }
+
+  getGroupQuotationById(id: string): GroupQuotation | undefined {
+    return this.getGroupQuotations().find(q => q.id === id || q.reference.toUpperCase() === id.toUpperCase());
+  }
+
+  createGroupQuotation(quotation: Omit<GroupQuotation, 'id' | 'reference' | 'createdAt' | 'status'>): GroupQuotation {
+    const list = this.getGroupQuotations();
+    const randomDigits = Math.floor(1000 + Math.random() * 9000);
+    const year = new Date().getFullYear();
+    const reference = `M07-GQ-${year}-${randomDigits}`;
+
+    const newQuotation: GroupQuotation = {
+      ...quotation,
+      id: `gq-${Date.now()}`,
+      reference,
+      status: 'Submitted',
+      createdAt: new Date().toISOString()
+    };
+
+    list.unshift(newQuotation);
+    this.saveGroupQuotations(list);
+    return newQuotation;
+  }
+
+  updateGroupQuotationStatus(id: string, status: GroupQuotation['status']): GroupQuotation | null {
+    const list = this.getGroupQuotations();
+    const item = list.find(q => q.id === id);
+    if (!item) return null;
+    item.status = status;
+    this.saveGroupQuotations(list);
+    return item;
   }
 
   // --- EXPORT TO CSV ---

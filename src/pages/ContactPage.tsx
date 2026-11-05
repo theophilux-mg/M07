@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { dataService } from '../services/dataService';
 import { 
   Phone, 
   Mail, 
   MapPin, 
-  Clock, 
   MessageSquare, 
   Send, 
   CheckCircle2, 
-  Compass, 
-  ShieldCheck 
+  Users
 } from 'lucide-react';
 
 export const ContactPage: React.FC = () => {
@@ -44,14 +43,14 @@ export const ContactPage: React.FC = () => {
       
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-semibold">
-          24/7 Operations Desk
-        </span>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white font-display">
-          Contact M07 – MSANIFU ZERO SEVEN
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-emerald-500/30 text-xs text-emerald-300 font-semibold uppercase tracking-wider">
+          <Phone className="w-3.5 h-3.5 text-emerald-400" /> A Phone Call Away
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-white">
+          Contact Msanifu Zero Seven
         </h1>
-        <p className="text-xs sm:text-sm text-neutral-400">
-          Our dispatch and concierge team is available 24 hours a day across Mombasa, Moi International Airport, and Diani Beach.
+        <p className="text-xs sm:text-sm text-slate-300">
+          Your travel partner for memorable journeys across Mombasa, Diani Beach, Kwale, and SGR Miritini.
         </p>
       </div>
 
@@ -61,106 +60,103 @@ export const ContactPage: React.FC = () => {
         {/* Left Information Column (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
           
-          <div className="bg-[#0F141D] border border-[#D4AF37]/30 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
-            <h3 className="text-lg font-bold text-white font-display pb-3 border-b border-neutral-800">
-              Direct Contact Information
+          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
+            <h3 className="text-lg font-bold text-white pb-3 border-b border-slate-800">
+              Direct Contact Details
             </h3>
 
             <div className="space-y-4 text-xs">
               <div className="flex items-start gap-3.5">
-                <div className="w-9 h-9 rounded-lg bg-[#141B26] border border-[#D4AF37]/20 flex items-center justify-center text-[#D4AF37] shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-lg bg-slate-950 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
                   <Phone className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-neutral-400 block font-medium">Hotline & WhatsApp Dispatch</span>
-                  <a href="tel:+254729255154" className="text-white hover:text-[#D4AF37] font-bold text-sm block mt-0.5">
-                    +254 729 255 154
+                  <span className="text-slate-400 block font-medium">Hotline & WhatsApp</span>
+                  <a href="tel:+254729255154" className="text-white hover:text-amber-300 font-bold text-sm block mt-0.5 font-mono">
+                    0729 255154 / +254 729 255 154
                   </a>
-                  <p className="text-neutral-500 text-[11px] mt-0.5">Calls, SMS & WhatsApp 24/7</p>
+                  <p className="text-slate-400 text-[11px] mt-0.5">Calls, SMS & WhatsApp inquiries</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-9 h-9 rounded-lg bg-[#141B26] border border-[#D4AF37]/20 flex items-center justify-center text-[#D4AF37] shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-lg bg-slate-950 border border-sky-500/30 flex items-center justify-center text-sky-400 shrink-0 mt-0.5">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-neutral-400 block font-medium">Official Email Desk</span>
-                  <a href="mailto:msanifuzeroseven@gmail.com" className="text-white hover:text-[#D4AF37] font-bold text-sm block mt-0.5">
+                  <span className="text-slate-400 block font-medium">Official Email</span>
+                  <a href="mailto:msanifuzeroseven@gmail.com" className="text-white hover:text-sky-300 font-bold text-sm block mt-0.5">
                     msanifuzeroseven@gmail.com
                   </a>
-                  <p className="text-neutral-500 text-[11px] mt-0.5">Quotes, agreements & corporate inquiries</p>
+                  <p className="text-slate-400 text-[11px] mt-0.5">Quotations, corporate contracts & bookings</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-9 h-9 rounded-lg bg-[#141B26] border border-[#D4AF37]/20 flex items-center justify-center text-[#D4AF37] shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-lg bg-slate-950 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-neutral-400 block font-medium">Physical Headquarters</span>
-                  <p className="text-white font-bold text-sm mt-0.5">Links Road, Nyali</p>
-                  <p className="text-neutral-500 text-[11px] mt-0.5">Mombasa, Coast Province, Kenya</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3.5">
-                <div className="w-9 h-9 rounded-lg bg-[#141B26] border border-[#D4AF37]/20 flex items-center justify-center text-[#D4AF37] shrink-0 mt-0.5">
-                  <Clock className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="text-neutral-400 block font-medium">Operating Hours</span>
-                  <p className="text-white font-bold text-sm mt-0.5">24 Hours / 7 Days a Week</p>
-                  <p className="text-neutral-500 text-[11px] mt-0.5">Round-the-clock airport delivery & emergency assistance</p>
+                  <span className="text-slate-400 block font-medium">Location</span>
+                  <p className="text-white font-bold text-sm mt-0.5">Mombasa, Kenya</p>
+                  <p className="text-slate-400 text-[11px] mt-0.5">Serving Mombasa, SGR Miritini, Diani & Kwale</p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-neutral-800">
+            <div className="pt-4 border-t border-slate-800 space-y-2">
               <a
                 href={`https://wa.me/254729255154?text=${encodeURIComponent(
-                  'Hello M07, I am contacting you from the website contact page for immediate assistance.'
+                  'Hello Msanifu Zero Seven, I would like to inquire about vehicle hire / transfer services in Mombasa.'
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2.5 px-4 bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-2 shadow-md shadow-emerald-950/40"
               >
                 <MessageSquare className="w-4 h-4" />
                 <span>Chat Directly on WhatsApp</span>
               </a>
+
+              <Link
+                to="/quotation"
+                className="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2"
+              >
+                <Users className="w-4 h-4 text-emerald-400" />
+                <span>Request Group Quotation</span>
+              </Link>
             </div>
           </div>
 
-          {/* Coastal Service Hubs */}
-          <div className="bg-[#0F141D] border border-neutral-800 rounded-2xl p-6 space-y-3">
-            <h4 className="text-xs uppercase font-bold text-white tracking-wider">Key Staging Hubs</h4>
-            <div className="grid grid-cols-2 gap-2 text-xs text-neutral-300">
-              <span className="p-2 bg-neutral-950 rounded border border-neutral-850">Moi Airport (MBA)</span>
-              <span className="p-2 bg-neutral-950 rounded border border-neutral-850">Nyali Beach Hub</span>
-              <span className="p-2 bg-neutral-950 rounded border border-neutral-850">Diani Beach Station</span>
-              <span className="p-2 bg-neutral-950 rounded border border-neutral-850">SGR Miritini Terminus</span>
+          {/* Coastal Staging Hubs */}
+          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-3">
+            <h4 className="text-xs uppercase font-bold text-white tracking-wider">Service Coverage</h4>
+            <div className="grid grid-cols-2 gap-2 text-xs text-slate-300">
+              <span className="p-2 bg-slate-950 rounded border border-slate-800">Moi Airport (MBA)</span>
+              <span className="p-2 bg-slate-950 rounded border border-slate-800">SGR Miritini Terminus</span>
+              <span className="p-2 bg-slate-950 rounded border border-slate-800">Diani Beach (South Coast)</span>
+              <span className="p-2 bg-slate-950 rounded border border-slate-800">Kwale Town & Shimba Hills</span>
             </div>
           </div>
 
         </div>
 
         {/* Right Form Column (7 cols) */}
-        <div className="lg:col-span-7 bg-[#0F141D] border border-neutral-800 rounded-2xl p-6 sm:p-8 shadow-xl">
-          <h3 className="text-xl font-bold text-white font-display mb-2">Send Us an Enquiry</h3>
-          <p className="text-xs text-neutral-400 mb-6">
-            Fill out the form below. Messages are logged directly to our dispatch dashboard and answered promptly.
+        <div className="lg:col-span-7 bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+          <h3 className="text-xl font-bold text-white mb-2">Send Us an Enquiry</h3>
+          <p className="text-xs text-slate-400 mb-6">
+            Fill out the form below. Messages are logged directly and answered promptly by our dispatch desk.
           </p>
 
           {isSuccess ? (
             <div className="p-8 text-center bg-emerald-950/60 border border-emerald-600 rounded-xl space-y-3">
               <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
               <h4 className="text-base font-bold text-white">Message Dispatched!</h4>
-              <p className="text-xs text-neutral-300">
-                Thank you for contacting M07 Msanifu Zero Seven. A fleet representative will respond within 30 minutes.
+              <p className="text-xs text-slate-300">
+                Thank you for contacting Msanifu Zero Seven. Our team will respond promptly.
               </p>
               <button
                 onClick={() => setIsSuccess(false)}
-                className="text-xs text-[#D4AF37] underline pt-2"
+                className="text-xs text-amber-400 underline pt-2 cursor-pointer"
               >
                 Send another message
               </button>
@@ -169,88 +165,90 @@ export const ContactPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-neutral-300 font-medium mb-1">Your Full Name *</label>
+                  <label className="block text-slate-300 font-medium mb-1">Your Full Name *</label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Captain James Kariuki"
+                    placeholder="e.g. Hassan Omar"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full p-2.5 bg-neutral-950 border border-neutral-700 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]"
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-neutral-300 font-medium mb-1">Phone Number (WhatsApp) *</label>
+                  <label className="block text-slate-300 font-medium mb-1">Phone Number (WhatsApp) *</label>
                   <input
                     type="tel"
                     required
-                    placeholder="+254 729 255 154"
+                    placeholder="0729 255154"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full p-2.5 bg-neutral-950 border border-neutral-700 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]"
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-neutral-300 font-medium mb-1">Email Address *</label>
+                  <label className="block text-slate-300 font-medium mb-1">Email Address *</label>
                   <input
                     type="email"
                     required
                     placeholder="name@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full p-2.5 bg-neutral-950 border border-neutral-700 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]"
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-neutral-300 font-medium mb-1">Service of Interest</label>
+                  <label className="block text-slate-300 font-medium mb-1">Service of Interest</label>
                   <select
                     value={serviceInterest}
                     onChange={(e) => setServiceInterest(e.target.value)}
-                    className="w-full p-2.5 bg-neutral-950 border border-neutral-700 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]"
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-emerald-500"
                   >
-                    <option value="General Car Hire">General Car Hire (Self-Drive)</option>
+                    <option value="General Car Hire">General Car Hire (Self-Drive / Chauffeur)</option>
+                    <option value="Noah/Voxy Mombasa Hire">Toyota Noah / Voxy Hire (from KSh 6,000)</option>
+                    <option value="Group Coaster Bus">Toyota Coaster (20-Passenger Bus)</option>
                     <option value="Airport Transfer (Moi MBA)">Airport Transfer (Moi MBA)</option>
-                    <option value="Chauffeur VIP Escort">Chauffeur VIP Escort</option>
-                    <option value="Mombasa City Tour">Mombasa City Tour / Safari</option>
+                    <option value="SGR Miritini Transfer">SGR Miritini Transfer / Diani</option>
+                    <option value="Diani Beach & Kwale Day Hire">Diani Beach & Kwale Day Hire</option>
                     <option value="Corporate Fleet Account">Corporate Fleet Account</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-neutral-300 font-medium mb-1">Subject</label>
+                <label className="block text-slate-300 font-medium mb-1">Subject</label>
                 <input
                   type="text"
-                  placeholder="e.g. Prado TX hire from March 10 to 15"
+                  placeholder="e.g. Noah 7-seater daily hire in Mombasa"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full p-2.5 bg-neutral-950 border border-neutral-700 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]"
+                  className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
               <div>
-                <label className="block text-neutral-300 font-medium mb-1">Your Detailed Message *</label>
+                <label className="block text-slate-300 font-medium mb-1">Your Detailed Message *</label>
                 <textarea
                   rows={4}
                   required
-                  placeholder="Tell us your dates, flight details, preferred vehicle, or route requirements..."
+                  placeholder="Tell us your travel dates, pickup location, destinations, passenger count, or special requests..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full p-2.5 bg-neutral-950 border border-neutral-700 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]"
+                  className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-emerald-500"
                 ></textarea>
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3 bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#AA820A] text-black font-bold text-xs rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+                className="w-full py-3 bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500 text-slate-950 font-bold text-xs rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg"
               >
                 <Send className="w-4 h-4" />
-                <span>Submit Inquiry to Dispatch Desk</span>
+                <span>Submit Inquiry to Msanifu Zero Seven</span>
               </button>
             </form>
           )}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useApp, PageView } from '../context/AppContext';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useApp } from '../context/AppContext';
 import { 
   Phone, 
   Menu, 
@@ -11,158 +12,182 @@ import {
   Plane, 
   Compass, 
   UserCheck, 
-  FileText 
+  FileText,
+  Users
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
-  const { currentView, navigateTo, isAdmin, adminLogout } = useApp();
+  const { isAdmin, adminLogout } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const handleNav = (view: PageView) => {
-    navigateTo(view);
-    setMobileMenuOpen(false);
+  const isActive = (path: string) => {
+    if (path === '/' && location.pathname === '/') return true;
+    if (path !== '/' && location.pathname.startsWith(path)) return true;
+    return false;
   };
 
   return (
     <>
-      {/* Top utility contact ticker - quiet & elegant */}
-      <div className="bg-[#05070A] border-b border-neutral-900 text-[11px] text-neutral-400 py-1.5 px-4 md:px-8">
+      {/* Top utility contact ticker - coastal & reliable */}
+      <div className="bg-[#05070A] border-b border-slate-900 text-[11px] text-slate-400 py-1.5 px-4 md:px-8">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-neutral-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
-              Mombasa, Kenya · Nyali & Moi Int'l Airport (MBA)
+            <span className="flex items-center gap-1.5 text-slate-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              Mombasa, Kenya · SGR Miritini · Diani · Kwale
             </span>
-            <span className="hidden sm:inline text-neutral-600">|</span>
+            <span className="hidden sm:inline text-slate-700">|</span>
             <a 
               href="tel:+254729255154" 
-              className="hover:text-[#D4AF37] transition-colors flex items-center gap-1"
+              className="hover:text-amber-400 transition-colors flex items-center gap-1 font-semibold text-slate-200"
             >
-              <Phone className="w-3 h-3 text-[#D4AF37]" />
-              +254 729 255 154
+              <Phone className="w-3 h-3 text-emerald-400" />
+              0729 255154
             </a>
+            <span className="hidden md:inline text-amber-400/90 font-medium">
+              "A Phone Call Away"
+            </span>
           </div>
 
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => handleNav('tracking')}
-              className={`hover:text-[#D4AF37] transition-colors flex items-center gap-1 ${currentView === 'tracking' ? 'text-[#D4AF37]' : ''}`}
+            <Link 
+              to="/quotation"
+              className={`hover:text-emerald-400 transition-colors flex items-center gap-1 font-medium ${isActive('/quotation') ? 'text-emerald-400' : ''}`}
+            >
+              <Users className="w-3 h-3 text-emerald-400" />
+              Group Quotation
+            </Link>
+            <span className="text-slate-700">·</span>
+            <Link 
+              to="/tracking"
+              className={`hover:text-amber-400 transition-colors flex items-center gap-1 ${isActive('/tracking') ? 'text-amber-400' : ''}`}
             >
               <Search className="w-3 h-3" />
-              Track Reservation
-            </button>
-            <span className="text-neutral-700">·</span>
+              Track Booking
+            </Link>
+            <span className="text-slate-700">·</span>
             {isAdmin ? (
               <div className="flex items-center gap-2">
-                <button 
-                  onClick={() => handleNav('admin')}
-                  className="text-[#D4AF37] hover:underline flex items-center gap-1 font-semibold"
+                <Link 
+                  to="/admin"
+                  className="text-amber-400 hover:underline flex items-center gap-1 font-semibold"
                 >
                   <ShieldCheck className="w-3 h-3" />
                   Admin Console
-                </button>
+                </Link>
                 <button 
                   onClick={adminLogout}
-                  className="text-neutral-400 hover:text-white text-[10px]"
+                  className="text-slate-400 hover:text-white text-[10px] cursor-pointer"
                 >
                   (Sign Out)
                 </button>
               </div>
             ) : (
-              <button 
-                onClick={() => handleNav('admin')}
-                className="hover:text-neutral-200 transition-colors flex items-center gap-1"
+              <Link 
+                to="/admin"
+                className="hover:text-slate-200 transition-colors flex items-center gap-1"
                 title="Management Sign In"
               >
-                <ShieldCheck className="w-3 h-3 text-neutral-500" />
+                <ShieldCheck className="w-3 h-3 text-slate-500" />
                 Staff Access
-              </button>
+              </Link>
             )}
           </div>
         </div>
       </div>
 
-      {/* Main Navigation: Top Bar Contract */}
-      <header className="sticky top-0 z-40 bg-[#080B10]/90 backdrop-blur-md border-b border-[#D4AF37]/15">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-8">
+      {/* Main Navigation Bar */}
+      <header className="sticky top-0 z-40 bg-[#080B10]/95 backdrop-blur-md border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
           
-          {/* Zone 1: Single text element wordmark */}
-          <button 
-            onClick={() => handleNav('home')}
-            className="flex items-center gap-2 group text-left cursor-pointer focus:outline-none"
+          {/* Logo & Brand */}
+          <Link 
+            to="/"
+            className="flex items-center gap-3 group text-left cursor-pointer focus:outline-none shrink-0"
           >
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#D4AF37] via-[#AA820A] to-[#080B10] p-[1px] shadow-sm">
-              <div className="w-full h-full bg-[#080B10] rounded-[7px] flex items-center justify-center">
-                <span className="font-bold text-sm tracking-wider text-[#D4AF37]">M07</span>
-              </div>
-            </div>
-            <div className="whitespace-nowrap shrink-0">
-              <span className="font-extrabold text-lg sm:text-xl tracking-tight text-white block group-hover:text-[#D4AF37] transition-colors">
+            <img 
+              src="/images/m07_logo.svg" 
+              alt="Msanifu Zero Seven Logo" 
+              className="w-12 h-12 object-contain group-hover:scale-105 transition-transform"
+            />
+            <div className="whitespace-nowrap">
+              <span className="font-extrabold text-base sm:text-lg tracking-tight text-white block group-hover:text-amber-300 transition-colors">
                 MSANIFU ZERO SEVEN
               </span>
+              <span className="text-[11px] text-emerald-400 font-semibold tracking-wider block">
+                Tour and Travel · <span className="text-amber-400/90 font-normal">A Phone Call Away</span>
+              </span>
             </div>
-          </button>
+          </Link>
 
-          {/* Zone 2: 4–5 concise single-line nav links */}
-          <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-neutral-300">
-            <button 
-              onClick={() => handleNav('fleet')}
-              className={`hover:text-[#D4AF37] transition-colors whitespace-nowrap shrink-0 ${currentView === 'fleet' ? 'text-[#D4AF37] font-semibold' : ''}`}
+          {/* Desktop Nav Links */}
+          <nav className="hidden xl:flex items-center gap-5 text-sm font-medium text-slate-300">
+            <Link 
+              to="/fleet"
+              className={`hover:text-amber-300 transition-colors whitespace-nowrap ${isActive('/fleet') ? 'text-amber-300 font-semibold' : ''}`}
             >
               Our Fleet
-            </button>
-            <button 
-              onClick={() => handleNav('car-hire')}
-              className={`hover:text-[#D4AF37] transition-colors whitespace-nowrap shrink-0 ${currentView === 'car-hire' ? 'text-[#D4AF37] font-semibold' : ''}`}
+            </Link>
+            <Link 
+              to="/car-hire"
+              className={`hover:text-amber-300 transition-colors whitespace-nowrap ${isActive('/car-hire') ? 'text-amber-300 font-semibold' : ''}`}
             >
               Car Hire
-            </button>
-            <button 
-              onClick={() => handleNav('transfers')}
-              className={`hover:text-[#D4AF37] transition-colors whitespace-nowrap shrink-0 ${currentView === 'transfers' ? 'text-[#D4AF37] font-semibold' : ''}`}
+            </Link>
+            <Link 
+              to="/airport-transfers"
+              className={`hover:text-amber-300 transition-colors whitespace-nowrap ${isActive('/airport-transfers') ? 'text-amber-300 font-semibold' : ''}`}
             >
-              Airport Transfers
-            </button>
-            <button 
-              onClick={() => handleNav('tours')}
-              className={`hover:text-[#D4AF37] transition-colors whitespace-nowrap shrink-0 ${currentView === 'tours' ? 'text-[#D4AF37] font-semibold' : ''}`}
+              Airport & SGR
+            </Link>
+            <Link 
+              to="/city-tours"
+              className={`hover:text-amber-300 transition-colors whitespace-nowrap ${isActive('/city-tours') ? 'text-amber-300 font-semibold' : ''}`}
             >
-              City Tours
-            </button>
-            <button 
-              onClick={() => handleNav('chauffeur')}
-              className={`hover:text-[#D4AF37] transition-colors whitespace-nowrap shrink-0 ${currentView === 'chauffeur' ? 'text-[#D4AF37] font-semibold' : ''}`}
+              City Tours & Diani
+            </Link>
+            <Link 
+              to="/quotation"
+              className={`hover:text-emerald-400 transition-colors whitespace-nowrap font-semibold ${isActive('/quotation') ? 'text-emerald-400' : 'text-emerald-400/90'}`}
+            >
+              Group Quotation
+            </Link>
+            <Link 
+              to="/chauffeur"
+              className={`hover:text-amber-300 transition-colors whitespace-nowrap ${isActive('/chauffeur') ? 'text-amber-300 font-semibold' : ''}`}
             >
               Chauffeur VIP
-            </button>
-            <button 
-              onClick={() => handleNav('about')}
-              className={`hover:text-[#D4AF37] transition-colors whitespace-nowrap shrink-0 ${currentView === 'about' ? 'text-[#D4AF37] font-semibold' : ''}`}
+            </Link>
+            <Link 
+              to="/about"
+              className={`hover:text-amber-300 transition-colors whitespace-nowrap ${isActive('/about') ? 'text-amber-300 font-semibold' : ''}`}
             >
               About
-            </button>
-            <button 
-              onClick={() => handleNav('contact')}
-              className={`hover:text-[#D4AF37] transition-colors whitespace-nowrap shrink-0 ${currentView === 'contact' ? 'text-[#D4AF37] font-semibold' : ''}`}
+            </Link>
+            <Link 
+              to="/contact"
+              className={`hover:text-amber-300 transition-colors whitespace-nowrap ${isActive('/contact') ? 'text-amber-300 font-semibold' : ''}`}
             >
               Contact
-            </button>
+            </Link>
           </nav>
 
-          {/* Zone 3: 1 primary action */}
+          {/* Action CTAs */}
           <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={() => handleNav('booking')}
-              className="px-5 py-2.5 text-xs sm:text-sm font-semibold tracking-wide text-[#080B10] bg-gradient-to-r from-[#F3E5AB] via-[#D4AF37] to-[#AA820A] rounded-md shadow-md hover:brightness-110 active:scale-95 transition-all whitespace-nowrap shrink-0 cursor-pointer flex items-center gap-2"
+            <Link
+              to="/booking"
+              className="px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold tracking-wide text-slate-950 bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500 hover:from-amber-200 hover:to-amber-400 rounded-lg shadow-md hover:brightness-110 active:scale-95 transition-all whitespace-nowrap cursor-pointer flex items-center gap-2"
             >
               <Calendar className="w-4 h-4" />
               <span>Book Vehicle</span>
-            </button>
+            </Link>
 
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-neutral-300 hover:text-white hover:bg-neutral-800 rounded-md transition-colors"
+              className="xl:hidden p-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-md transition-colors"
               aria-label="Toggle navigation"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -174,58 +199,70 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden bg-black/80 backdrop-blur-xl flex flex-col justify-between p-6 overflow-y-auto">
+        <div className="fixed inset-0 z-50 xl:hidden bg-black/85 backdrop-blur-xl flex flex-col justify-between p-6 overflow-y-auto">
           <div>
-            <div className="flex items-center justify-between pb-6 border-b border-neutral-800">
-              <span className="font-bold text-lg text-white">M07 Navigation</span>
+            <div className="flex items-center justify-between pb-6 border-b border-slate-800">
+              <div className="flex items-center gap-2.5">
+                <img src="/images/m07_logo.svg" alt="M07" className="w-10 h-10 object-contain" />
+                <div>
+                  <span className="font-bold text-base text-white block">Msanifu Zero Seven</span>
+                  <span className="text-[11px] text-amber-400">A Phone Call Away</span>
+                </div>
+              </div>
               <button 
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 text-neutral-400 hover:text-white"
+                className="p-2 text-slate-400 hover:text-white"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
-            <nav className="flex flex-col gap-2 mt-6">
+            <nav className="flex flex-col gap-1.5 mt-6">
               {[
-                { view: 'home', label: 'Home', icon: Car },
-                { view: 'fleet', label: 'Our Fleet', icon: Car },
-                { view: 'car-hire', label: 'Car Hire (Self-Drive & Chauffeur)', icon: FileText },
-                { view: 'transfers', label: 'Airport Transfers (Moi MBA)', icon: Plane },
-                { view: 'tours', label: 'Mombasa City Tours & Safaris', icon: Compass },
-                { view: 'chauffeur', label: 'VIP Chauffeur Services', icon: UserCheck },
-                { view: 'booking', label: 'Book & Reserve Now', icon: Calendar },
-                { view: 'tracking', label: 'Track Reservation Status', icon: Search },
-                { view: 'gallery', label: 'Fleet & Mombasa Gallery', icon: Car },
-                { view: 'corporate', label: 'Corporate Partnerships', icon: ShieldCheck },
-                { view: 'about', label: 'About M07', icon: FileText },
-                { view: 'faqs', label: 'Rental FAQs & Requirements', icon: FileText },
-                { view: 'contact', label: 'Contact Office (Nyali)', icon: Phone },
-                { view: 'terms', label: 'Rental Terms & Conditions', icon: FileText },
-                { view: 'privacy', label: 'Privacy Policy', icon: FileText },
-                { view: 'admin', label: 'Staff / Admin Portal', icon: ShieldCheck },
+                { path: '/', label: 'Home', icon: Car },
+                { path: '/fleet', label: 'Our Fleet (Toyota Coaster, Noah/Voxy...)', icon: Car },
+                { path: '/quotation', label: 'Request a Group Quotation (New)', icon: Users, highlight: true },
+                { path: '/car-hire', label: 'Car Hire (Self-Drive & Chauffeur)', icon: FileText },
+                { path: '/airport-transfers', label: 'Airport & SGR Miritini Transfers', icon: Plane },
+                { path: '/city-tours', label: 'City Tours, Diani & Kwale Day Hire', icon: Compass },
+                { path: '/chauffeur', label: 'VIP Chauffeur Services', icon: UserCheck },
+                { path: '/booking', label: 'Book & Reserve Vehicle', icon: Calendar },
+                { path: '/tracking', label: 'Track Booking Status', icon: Search },
+                { path: '/gallery', label: 'Fleet & Coastal Gallery', icon: Car },
+                { path: '/corporate', label: 'Corporate Partnerships', icon: ShieldCheck },
+                { path: '/about', label: 'About Msanifu Zero Seven', icon: FileText },
+                { path: '/faqs', label: 'Rental FAQs & Rates', icon: FileText },
+                { path: '/contact', label: 'Contact (Mombasa, Kenya)', icon: Phone },
+                { path: '/terms', label: 'Rental Terms & Conditions', icon: FileText },
+                { path: '/privacy', label: 'Privacy Policy', icon: FileText },
+                { path: '/admin', label: 'Staff / Admin Portal', icon: ShieldCheck },
               ].map(item => {
                 const Icon = item.icon;
-                const active = currentView === item.view;
+                const active = isActive(item.path);
                 return (
-                  <button
-                    key={item.view}
-                    onClick={() => handleNav(item.view as PageView)}
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-3 p-3 rounded-lg text-left text-sm font-medium transition-colors ${
-                      active ? 'bg-[#D4AF37]/15 text-[#D4AF37] border border-[#D4AF37]/30' : 'text-neutral-300 hover:bg-neutral-900'
+                      active 
+                        ? 'bg-amber-400/15 text-amber-300 border border-amber-400/30' 
+                        : item.highlight 
+                          ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/30' 
+                          : 'text-slate-300 hover:bg-slate-900'
                     }`}
                   >
-                    <Icon className="w-4 h-4 text-[#D4AF37]" />
+                    <Icon className={`w-4 h-4 ${item.highlight ? 'text-emerald-400' : 'text-amber-400'}`} />
                     <span>{item.label}</span>
-                  </button>
+                  </Link>
                 );
               })}
             </nav>
           </div>
 
-          <div className="pt-6 border-t border-neutral-800 text-xs text-neutral-400">
-            <p className="font-semibold text-white mb-1">M07 – MSANIFU ZERO SEVEN</p>
-            <p>Hotline: +254 729 255 154</p>
+          <div className="pt-6 border-t border-slate-800 text-xs text-slate-400">
+            <p className="font-semibold text-white mb-1">Msanifu Zero Seven Tour and Travel</p>
+            <p>Phone: 0729 255154 · Mombasa, Kenya</p>
             <p>Email: msanifuzeroseven@gmail.com</p>
           </div>
         </div>

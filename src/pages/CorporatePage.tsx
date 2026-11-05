@@ -147,7 +147,7 @@ export const CorporatePage: React.FC = () => {
                 <input
                   type="tel"
                   required
-                  placeholder="+254 729 255 154"
+                  placeholder="0729 255154"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="w-full p-2.5 bg-neutral-950 border border-neutral-700 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]"
@@ -162,6 +162,7 @@ export const CorporatePage: React.FC = () => {
                 onChange={(e) => setFleetNeeds(e.target.value)}
                 className="w-full p-2.5 bg-neutral-950 border border-neutral-700 rounded-lg text-white focus:outline-none focus:border-[#D4AF37]"
               >
+                <option value="20-Passenger Toyota Coaster Buses (Group Delegations)">20-Passenger Toyota Coaster Buses (Group Delegations)</option>
                 <option value="1-2 Executive SUVs (Prado / Land Cruiser)">1-2 Executive SUVs (Prado / Land Cruiser)</option>
                 <option value="3-5 Vehicles (Monthly Commercial Lease)">3-5 Vehicles (Monthly Commercial Lease)</option>
                 <option value="6-10+ Fleet Vehicles (Double Cabins & Vans)">6-10+ Fleet Vehicles (Double Cabins & Vans)</option>

@@ -71,11 +71,11 @@ M07 Hotline: +254 729 255 154 | Mombasa, Kenya`;
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-neutral-800">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-xl font-black tracking-tight text-white font-display">M07</span>
-                <span className="text-sm font-bold tracking-widest text-[#D4AF37]">MSANIFU ZERO SEVEN</span>
+                <img src="/images/m07_logo.svg" alt="M07" className="w-8 h-8 object-contain" />
+                <span className="text-sm font-bold tracking-widest text-[#D4AF37]">MSANIFU ZERO SEVEN TOUR AND TRAVEL</span>
               </div>
-              <p className="text-xs text-neutral-400">Premium Car Hire · Airport Transfers · Tourism Logistics</p>
-              <p className="text-[11px] text-neutral-500 mt-0.5">Links Road, Nyali, Mombasa · Hotline: +254 729 255 154</p>
+              <p className="text-xs text-neutral-400">A Phone Call Away · Car Hire · Airport Transfers · Tourism Logistics</p>
+              <p className="text-[11px] text-neutral-500 mt-0.5">Mombasa, Kenya · Hotline: 0729 255154 (+254 729 255 154)</p>
             </div>
 
             <div className="sm:text-right">

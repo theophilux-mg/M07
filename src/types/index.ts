@@ -1,6 +1,7 @@
 export type VehicleCategory = 
   | 'Small cars'
   | 'Noah/Voxy/Serena'
+  | 'Toyota Coaster (20-seater)'
   | 'Double cabins'
   | 'RAV4'
   | 'Prado'
@@ -18,7 +19,7 @@ export interface Vehicle {
   luggageCapacity: number; // in bags
   pricePerDay: number; // in KSh
   pricePerDayWeekly?: number; // discounted rate for 7+ days
-  chauffeurDailyRate: number; // in KSh (typically 2,000 - 3,500)
+  chauffeurDailyRate: number; // in KSh
   image: string;
   description: string;
   features: string[];
@@ -57,7 +58,7 @@ export interface Booking {
   vehicleName: string;
   vehicleCategory: VehicleCategory;
   vehicleImage: string;
-  serviceType: 'Self-drive' | 'Chauffeur Driven' | 'Airport Transfer' | 'Tour Package';
+  serviceType: 'Self-drive' | 'Chauffeur Driven' | 'Airport Transfer' | 'Tour Package' | 'Group Transport';
   passengers: number;
   chauffeurIncluded: boolean;
   specialInstructions?: string;
@@ -89,7 +90,7 @@ export interface CustomerEnquiry {
 export interface CustomerReview {
   id: string;
   author: string;
-  location: string; // e.g. "Nairobi, Kenya" or "London, UK"
+  location: string;
   rating: number; // 1-5
   comment: string;
   vehicleHired: string;
@@ -126,4 +127,40 @@ export interface MpesaTransaction {
   status: 'Success' | 'Failed' | 'Pending';
   receiptNumber: string;
   timestamp: string;
+}
+
+// Group Quotation Types
+export interface QuotationLeg {
+  id: string;
+  pickup: string;
+  destination: string;
+  date: string;
+  serviceType: 'Transfer' | 'Full-Day Hire' | 'Safari Excursion' | 'Tour';
+  estimatedPriceKsh: number;
+}
+
+export interface GroupQuotation {
+  id: string;
+  reference: string;
+  clientName: string;
+  phone: string;
+  email: string;
+  organization?: string;
+  passengers: number;
+  legs: QuotationLeg[];
+  totalEstimateKsh: number;
+  perPersonKsh: number;
+  specialRequests?: string;
+  createdAt: string;
+  status: 'Draft' | 'Submitted' | 'Reviewed' | 'Confirmed';
+}
+
+export interface RouteTariff {
+  id: string;
+  from: string;
+  to: string;
+  serviceType: string;
+  vehicleType: string;
+  priceKsh: number;
+  notes?: string;
 }

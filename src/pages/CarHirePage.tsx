@@ -56,7 +56,7 @@ export const CarHirePage: React.FC = () => {
               </li>
               <li className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-[#D4AF37] shrink-0" />
-                <span>24/7 AA Kenya coastal roadside rescue</span>
+                <span>AA Kenya coastal roadside rescue & prompt support</span>
               </li>
               <li className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-[#D4AF37] shrink-0" />
@@ -148,8 +148,9 @@ export const CarHirePage: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-neutral-850">
               {[
+                { cat: 'Toyota Coaster (20-seater)', models: 'Executive 20-Passenger Luxury Bus (Group Transport)', rate: 'KSh 22,000', chf: '+KSh 3,500/day', cap: '20 Seats · 16 Bags' },
+                { cat: 'Noah / Voxy / Serena', models: 'Toyota Noah / Voxy 7-seater (from 6k/day in Mombasa)', rate: 'From KSh 6,000', chf: '+KSh 2,500/day', cap: '7 Seats · 5 Bags' },
                 { cat: 'Small cars', models: 'Toyota Vitz, Axio, Fielder, Demio', rate: 'KSh 3,500', chf: '+KSh 2,000/day', cap: '4-5 Seats · 2-3 Bags' },
-                { cat: 'Noah / Voxy / Serena', models: 'Toyota Noah Si, Voxy ZS, Serena', rate: 'KSh 6,000 – 8,000', chf: '+KSh 2,500/day', cap: '7-8 Seats · 4-5 Bags' },
                 { cat: 'Double cabins 4x4', models: 'Toyota Hilux Revo, Isuzu D-Max', rate: 'KSh 9,000', chf: '+KSh 2,500/day', cap: '5 Seats · 8 Bags' },
                 { cat: 'RAV4 Luxury AWD', models: 'Toyota RAV4 Dynamic AWD', rate: 'KSh 7,000', chf: '+KSh 2,500/day', cap: '5 Seats · 4 Bags' },
                 { cat: 'Toyota Prado TX/TZ', models: 'Land Cruiser Prado Luxury 7-Seater', rate: 'KSh 15,000', chf: '+KSh 3,000/day', cap: '7 Seats · 6 Bags' },

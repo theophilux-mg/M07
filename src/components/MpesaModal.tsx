@@ -7,6 +7,7 @@ export const MpesaModal: React.FC = () => {
   const { mpesaModal, closeMpesaModal } = useApp();
   const [phone, setPhone] = useState(mpesaModal.phone || '+254729255154');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isLivePrompt, setIsLivePrompt] = useState(false);
   const [successReceipt, setSuccessReceipt] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -29,7 +30,9 @@ export const MpesaModal: React.FC = () => {
         mpesaModal.amount
       );
 
-      if (res.success && res.receipt) {
+      if (res.isLive) {
+        setIsLivePrompt(true);
+      } else if (res.success && res.receipt) {
         setSuccessReceipt(res.receipt);
       } else {
         setErrorMsg(res.message || 'Payment simulation failed.');
@@ -43,6 +46,7 @@ export const MpesaModal: React.FC = () => {
 
   const handleClose = () => {
     setSuccessReceipt(null);
+    setIsLivePrompt(false);
     setErrorMsg(null);
     closeMpesaModal();
   };
@@ -74,7 +78,33 @@ export const MpesaModal: React.FC = () => {
         </div>
 
         {/* Content */}
-        {successReceipt ? (
+        {isLivePrompt ? (
+          <div className="py-6 text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-emerald-950/80 border border-emerald-400 flex items-center justify-center mx-auto text-emerald-400 animate-pulse">
+              <Smartphone className="w-9 h-9" />
+            </div>
+            <div>
+              <h4 className="text-lg font-bold text-white">Check Your Mobile Handset!</h4>
+              <p className="text-xs text-neutral-300 mt-1 max-w-xs mx-auto">
+                A Safaricom STK prompt has been sent to <strong className="text-emerald-400 font-mono">{phone}</strong>.
+              </p>
+              <p className="text-[11px] text-neutral-400 mt-2">
+                Enter your secret M-Pesa PIN on your phone to complete payment of <strong className="text-[#D4AF37]">KSh {mpesaModal.amount.toLocaleString()}</strong>.
+              </p>
+            </div>
+
+            <div className="p-3 bg-neutral-900 rounded-xl border border-neutral-800 text-xs text-neutral-400">
+              Ref: <span className="font-mono text-white font-bold">{mpesaModal.bookingRef}</span> · Account: M07 Car Hire
+            </div>
+
+            <button
+              onClick={handleClose}
+              className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold transition-colors"
+            >
+              I Have Entered My PIN
+            </button>
+          </div>
+        ) : successReceipt ? (
           <div className="py-6 text-center space-y-4">
             <div className="w-16 h-16 rounded-full bg-emerald-950/80 border border-emerald-500 flex items-center justify-center mx-auto text-emerald-400">
               <CheckCircle className="w-10 h-10" />
